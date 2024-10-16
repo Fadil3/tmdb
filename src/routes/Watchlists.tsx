@@ -1,8 +1,7 @@
-import MovieCard from '../components/MovieCard'
 import Navbar from '../components/Navbar'
 import MovieGridLayout from '../Layouts/MovieGridLayout'
 
-export default function Root() {
+export default function Watchlists() {
   const dummyMovies = Array(9).fill({
     id: 1,
     adult: false,
@@ -24,17 +23,7 @@ export default function Root() {
     <>
       <Navbar />
       <main className="w-full min-h-screen bg-black flex flex-col gap-8 p-20">
-        <section className="h-full">
-          <h2 className="font-semibold text-5xl text-white text-left mb-5">
-            Now Playing
-          </h2>
-          <div className="flex gap-7 overflow-x-scroll py-4 ">
-            {dummyMovies.map((movie, index) => (
-              <MovieCard key={`${movie.id}-${index}`} movie={movie} />
-            ))}
-          </div>
-        </section>
-        <MovieGridLayout movies={dummyMovies} gridTitle="Top Rated" />
+        <MovieGridLayout movies={dummyMovies} gridTitle="Your Watchlist" />
       </main>
     </>
   )
