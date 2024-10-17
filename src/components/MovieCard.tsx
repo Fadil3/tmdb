@@ -1,4 +1,4 @@
-import { Movie } from '../types/movie'
+import { Movie } from '../types/movie-lists'
 import BookmarkIcon from '../assets/bookmark.svg'
 import BookmarkFilledIcon from '../assets/bookmark-filled.svg'
 import FavoriteIcon from '../assets/favorite.svg'
@@ -18,10 +18,7 @@ export default function MovieCard({
     id,
     poster_path,
     title,
-    release_date,
-    vote_average,
-    vote_count,
-    overview,
+    release_date
   },
   onClickFavorite,
   onClickBookmark,
@@ -50,11 +47,12 @@ export default function MovieCard({
     >
       <div className="overflow-hidden rounded-t-lg relative group">
         <img
-          src="https://placehold.co/600x400"
+          src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+          loading='lazy'
           alt="photo"
           className="h-[289px] w-full object-cover z-0"
         />
-        <div className="bg-gradient-to-b from-slate-50 to-zinc-800 h-full w-full invisible group-hover:visible absolute z-[1] opacity-80 top-0" />
+        <div className="bg-gradient-to-b from-slate-500 to-zinc-800 h-full w-full invisible group-hover:visible absolute z-[1] opacity-50 top-0" />
         <div className="absolute bottom-2 left-0 w-full h-12 flex justify-end items-center px-4 invisible group-hover:visible z-[2]">
           <div className="flex gap-2">
             <div
@@ -91,7 +89,7 @@ export default function MovieCard({
         </div>
       </div>
       <div className="px-4 text-left py-2">
-        <h4 className="text-[#B6B6B6] font-bold">{title}</h4>
+        <h4 className="text-[#B6B6B6] font-bold line-clamp-1">{title}</h4>
         <h5 className="text-[#828282]">{release_date}</h5>
       </div>
     </div>
