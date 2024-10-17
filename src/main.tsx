@@ -7,6 +7,8 @@ import Root from './routes/Root'
 import MovieDetail from './routes/MovieDetail'
 import Favorites from './routes/Favorites'
 import Watchlists from './routes/Watchlists'
+import { AuthCallback } from './routes/AuthCallback'
+import { AuthProvider } from './context/AuthContext'
 
 const router = createBrowserRouter([
   {
@@ -30,10 +32,16 @@ const router = createBrowserRouter([
     path: '/movie/:id',
     element: <MovieDetail />,
   },
+  {
+    path: '/auth-callback',
+    element: <AuthCallback />,
+  },
 ])
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
 )

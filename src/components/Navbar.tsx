@@ -1,5 +1,23 @@
 import LogoutIcon from '../assets/logout.svg'
+import { useLogin } from '../hooks/useLogin'
+import { useAuth } from '../context/AuthContext'
+
 export default function Navbar() {
+  const { isLoggedIn, logout: authLogout } = useAuth()
+  const { login, loading } = useLogin()
+
+  const handleLogin = async () => {
+    try {
+      await login()
+    } catch (error) {
+      console.error('Login failed:', error)
+    }
+  }
+
+  const handleLogout = () => {
+    authLogout()
+  }
+
   return (
     <nav className="w-full h-[100px] bg-[#0EA5E9] flex justify-between items-center px-20">
       <h1 className="text-4xl text-white font-black tracking-[15px]">CINEMA</h1>
@@ -13,11 +31,15 @@ export default function Navbar() {
         <li>
           <a href="/watchlists">Watchlists</a>
         </li>
-        <li>
-          <a href="/logout">
+        {isLoggedIn ? (
+          <button onClick={handleLogout}>
             <img src={LogoutIcon} alt="logout" />
-          </a>
-        </li>
+          </button>
+        ) : (
+          <button onClick={handleLogin} disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+        )}
       </ul>
     </nav>
   )
