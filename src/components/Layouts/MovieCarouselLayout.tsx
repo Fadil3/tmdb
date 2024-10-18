@@ -1,4 +1,3 @@
-import React from 'react'
 import MovieCardSkeleton from '../Loader/MovieCardSkeleton'
 import MovieCard from '../MovieCard'
 import { Movie } from '../../types/movie-lists'
@@ -45,20 +44,20 @@ export default function MovieCarouselLayout({
         <div className="flex gap-7 overflow-x-scroll py-4">
           {isLoading
             ? Array(10)
-                .fill(0)
-                .map((_, index) => <MovieCardSkeleton key={index} />)
+              .fill(0)
+              .map((_, index) => <MovieCardSkeleton key={index} />)
             : movies.map((movie, index) => (
-                <MovieCard
-                  key={`${movie.id}-${index}`}
-                  movie={movie}
-                  onClickBookmark={onClickBookmark}
-                  onClickFavorite={onClickFavorite}
-                  isBookmarked={isBookmarked}
-                  isFavorite={isFavorite}
-                  isAuthenticated={isAuthenticated}
-                  onLoginRequired={onLoginRequired}
-                />
-              ))}
+              <MovieCard
+                key={`${movie.id}-${index}`}
+                movie={movie}
+                onClickBookmark={onClickBookmark}
+                onClickFavorite={onClickFavorite}
+                isBookmarked={isBookmarked}
+                isFavorite={isFavorite}
+                isAuthenticated={isAuthenticated}
+                onLoginRequired={onLoginRequired}
+              />
+            ))}
         </div>
       )}
     </section>
