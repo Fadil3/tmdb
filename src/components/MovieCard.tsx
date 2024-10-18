@@ -8,18 +8,14 @@ import { useNavigate } from 'react-router-dom'
 
 interface MovieCardProps {
   movie: Movie
-  onClickFavorite?: () => void
-  onClickBookmark?: () => void
-  isFavorite?: boolean
-  isBookmarked?: boolean
+  onClickFavorite: (movie: Movie) => void
+  onClickBookmark: (movie: Movie) => void
+  isFavorite: (movie: Movie) => boolean
+  isBookmarked: (movie: Movie) => boolean
 }
+
 export default function MovieCard({
-  movie: {
-    id,
-    poster_path,
-    title,
-    release_date
-  },
+  movie,
   onClickFavorite,
   onClickBookmark,
   isFavorite,
@@ -30,14 +26,12 @@ export default function MovieCard({
   const [isFavoriteHovered, setIsFavoriteHovered] = useState(false)
 
   const handleCardClick = () => {
-    navigate(`/movie/${id}`)
+    navigate(`/movie/${movie.id}`)
   }
 
-  const handleIconClick = (e: React.MouseEvent, callback?: () => void) => {
+  const handleIconClick = (e: React.MouseEvent, callback: (movie: Movie) => void) => {
     e.stopPropagation()
-    if (callback) {
-      callback()
-    }
+    callback(movie)
   }
 
   return (
@@ -47,7 +41,7 @@ export default function MovieCard({
     >
       <div className="overflow-hidden rounded-t-lg relative group">
         <img
-          src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           loading='lazy'
           alt="photo"
           className="h-[289px] w-full object-cover z-0"
@@ -63,7 +57,7 @@ export default function MovieCard({
             >
               <img
                 src={
-                  isBookmarkHovered || isBookmarked
+                  isBookmarkHovered || isBookmarked(movie)
                     ? BookmarkFilledIcon
                     : BookmarkIcon
                 }
@@ -78,7 +72,7 @@ export default function MovieCard({
             >
               <img
                 src={
-                  isFavoriteHovered || isFavorite
+                  isFavoriteHovered || isFavorite(movie)
                     ? FavoriteFilledIcon
                     : FavoriteIcon
                 }
@@ -89,8 +83,8 @@ export default function MovieCard({
         </div>
       </div>
       <div className="px-4 text-left py-2">
-        <h4 className="text-[#B6B6B6] font-bold line-clamp-1">{title}</h4>
-        <h5 className="text-[#828282]">{release_date}</h5>
+        <h4 className="text-[#B6B6B6] font-bold line-clamp-1">{movie.title}</h4>
+        <h5 className="text-[#828282]">{new Date(movie.release_date).getFullYear()}</h5>
       </div>
     </div>
   )
