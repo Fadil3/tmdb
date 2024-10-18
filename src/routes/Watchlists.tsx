@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
-import Navbar from '../components/Navbar'
+import PageWrapper from '../components/Layouts/PageWrapper'
 import MovieGridLayout from '../components/Layouts/MovieGridLayout'
-import LoginModal from '../components/LoginModal'
 import { getBookmarks, toggleFavorite, isFavorite, toggleBookmark, isBookmarked } from '../utils/MovieAction'
 import { Movie } from '../types/movie-lists'
 
 export default function Watchlists() {
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn, openLoginModal } = useAuth()
   const [watchlist, setWatchlist] = useState<Movie[]>([])
   const [_favoriteStatus, setFavoriteStatus] = useState<{ [key: number]: boolean }>({})
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -19,7 +17,7 @@ export default function Watchlists() {
   }, [isLoggedIn])
 
   const handleLoginRequired = () => {
-    setIsLoginModalOpen(true)
+    openLoginModal()
   }
 
   const handleFavoriteClick = (movie: Movie) => {
@@ -41,30 +39,23 @@ export default function Watchlists() {
   }
 
   return (
-    <>
-      <Navbar />
-      <main className="w-full min-h-screen bg-black flex flex-col gap-8 p-20">
-        {isLoggedIn ? (
-          <MovieGridLayout
-            movies={watchlist}
-            gridTitle="Your Watchlist"
-            onClickFavorite={handleFavoriteClick}
-            onClickBookmark={handleBookmarkClick}
-            isFavorite={(movie) => isFavorite(movie.id)}
-            isBookmarked={(movie) => isBookmarked(movie.id)}
-            isAuthenticated={isLoggedIn}
-            onLoginRequired={handleLoginRequired}
-          />
-        ) : (
-          <div className="text-white text-center">
-            Please log in to view your watchlist.
-          </div>
-        )}
-      </main>
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-      />
-    </>
+    <PageWrapper>
+      {isLoggedIn ? (
+        <MovieGridLayout
+          movies={watchlist}
+          gridTitle="Your Watchlist"
+          onClickFavorite={handleFavoriteClick}
+          onClickBookmark={handleBookmarkClick}
+          isFavorite={(movie) => isFavorite(movie.id)}
+          isBookmarked={(movie) => isBookmarked(movie.id)}
+          isAuthenticated={isLoggedIn}
+          onLoginRequired={handleLoginRequired}
+        />
+      ) : (
+        <div className="text-white text-center">
+          Please log in to view your watchlist.
+        </div>
+      )}
+    </PageWrapper>
   )
 }

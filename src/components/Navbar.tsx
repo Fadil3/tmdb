@@ -24,7 +24,9 @@ export default function Navbar() {
   return (
     <>
       <nav className="w-full h-[100px] bg-[#0EA5E9] flex justify-between items-center px-20">
-        <h1 className="text-4xl text-white font-black tracking-[15px]">CINEMA</h1>
+        <Link to="/" className="text-4xl text-white font-black tracking-[15px]">
+          CINEMA
+        </Link>
         <ul className="flex gap-12 text-white items-center">
           <li>
             <Link to="/">Home</Link>
