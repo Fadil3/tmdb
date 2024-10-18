@@ -8,7 +8,7 @@ import MovieDetail from './routes/MovieDetail'
 import Favorites from './routes/Favorites'
 import Watchlists from './routes/Watchlists'
 import { AuthCallback } from './routes/AuthCallback'
-import { AuthProvider } from './context/AuthContext'
+import AuthContext from './context/AuthContext'
 
 const router = createBrowserRouter([
   {
@@ -40,8 +40,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
+    <AuthContext>
       <RouterProvider router={router} />
-    </AuthProvider>
+    </AuthContext>
   </StrictMode>,
 )

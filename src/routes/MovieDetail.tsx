@@ -18,7 +18,7 @@ import MovieDetailSkeleton from '../components/Loader/MovieDetailSkeleton'
 import CircleProgressBar from '../components/CircleProgressBar'
 import MovieGridLayout from '../components/Layouts/MovieGridLayout'
 import MovieCardSkeleton from '../components/Loader/MovieCardSkeleton'
-import LoginModal from '../components/LoginModal'
+import PageWrapper from '../components/Layouts/PageWrapper'
 
 import BookmarkIcon from '../assets/bookmark.svg'
 import BookmarkFilledIcon from '../assets/bookmark-filled.svg'
@@ -29,8 +29,7 @@ export default function MovieDetail() {
   const { id } = useParams<{ id: string }>()
   const [favoriteStatus, setFavoriteStatus] = useState(isFavorite(Number(id)))
   const [bookmarkStatus, setBookmarkStatus] = useState(isBookmarked(Number(id)))
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn, openLoginModal } = useAuth()
 
   const {
     data: movieData,
@@ -64,7 +63,7 @@ export default function MovieDetail() {
 
   const handleFavoriteClick = useCallback(() => {
     if (!isLoggedIn) {
-      setIsLoginModalOpen(true)
+      openLoginModal()
       return
     }
     if (movieData) {
@@ -75,7 +74,7 @@ export default function MovieDetail() {
 
   const handleBookmarkClick = useCallback(() => {
     if (!isLoggedIn) {
-      setIsLoginModalOpen(true)
+      openLoginModal()
       return
     }
     if (movieData) {
@@ -86,7 +85,7 @@ export default function MovieDetail() {
 
   const handleLoginRequired = () => {
     if (!isLoggedIn) {
-      setIsLoginModalOpen(true)
+      openLoginModal()
     }
   }
 
@@ -115,9 +114,8 @@ export default function MovieDetail() {
   }
 
   return (
-    <>
-      <Navbar />
-      <main>
+    <PageWrapper
+      banner={
         <section
           style={{
             backgroundImage: `
@@ -127,9 +125,9 @@ export default function MovieDetail() {
             backgroundSize: 'cover',
             backgroundPosition: 'top',
           }}
-          className={`h-[400px] px-10 py-[50px]`}
+          className={`min-h-[400px] px-10 py-[50px]`}
         >
-          <div className="flex gap-5 text-white items-center">
+          <div className="flex flex-col lg:flex-row gap-5 text-white items-center">
             <img
               src={`https://image.tmdb.org/t/p/w500${movieData?.poster_path}`}
               alt="photo"
@@ -176,34 +174,30 @@ export default function MovieDetail() {
                   onClick={handleFavoriteClick}
                 />
               </div>
-              <i className="mb-3">The World Forever Changes.</i>
+              <i className="mb-5">{
+                movieData?.tagline}</i>
               <h2 className="font-bold mb-1">Overview</h2>
               <p>{movieData?.overview}</p>
             </div>
           </div>
         </section>
-        <section className="bg-black min-h-screen px-10 py-[50px]">
-          <section className="h-full">
-            <MovieGridLayout
-              movies={nowPlayingMovies?.results || []}
-              gridTitle="Now Playing"
-              isLoading={nowPlayingLoading}
-              isError={nowPlayingError !== null}
-              errorMessage="An error occurred while fetching movies."
-              onClickFavorite={toggleFavorite}
-              onClickBookmark={toggleBookmark}
-              isFavorite={(movie) => isFavorite(movie.id)}
-              isBookmarked={(movie) => isBookmarked(movie.id)}
-              isAuthenticated={isLoggedIn}
-              onLoginRequired={handleLoginRequired}
-            />
-          </section>
-        </section>
-      </main>
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-      />
-    </>
+      }
+    >
+      <section className="h-full">
+        <MovieGridLayout
+          movies={nowPlayingMovies?.results || []}
+          gridTitle="Now Playing"
+          isLoading={nowPlayingLoading}
+          isError={nowPlayingError !== null}
+          errorMessage="An error occurred while fetching movies."
+          onClickFavorite={toggleFavorite}
+          onClickBookmark={toggleBookmark}
+          isFavorite={(movie) => isFavorite(movie.id)}
+          isBookmarked={(movie) => isBookmarked(movie.id)}
+          isAuthenticated={isLoggedIn}
+          onLoginRequired={handleLoginRequired}
+        />
+      </section>
+    </PageWrapper>
   )
 }

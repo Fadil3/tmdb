@@ -22,11 +22,11 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="w-full h-[100px] bg-[#0EA5E9] flex justify-between items-center px-20">
-        <Link to="/" className="text-4xl text-white font-black tracking-[15px]">
+      <nav className="w-full h-[100px] bg-[#0EA5E9] flex justify-between items-center px-20 flex-col md:flex-row py-4">
+        <Link to="/" className="text-2xl lg:text-4xl text-white font-black tracking-[15px]">
           CINEMA
         </Link>
-        <ul className="flex gap-12 text-white items-center">
+        <ul className="flex gap-4 md:gap-12 text-white items-center">
           <li>
             <Link to="/">Home</Link>
           </li>

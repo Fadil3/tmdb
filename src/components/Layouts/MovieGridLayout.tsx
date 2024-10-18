@@ -37,7 +37,7 @@ export default function MovieGridLayout({
       <h2 className="font-semibold text-5xl text-white text-left mb-8">
         {gridTitle}
       </h2>
-      <div className="grid grid-cols-5 xl:grid-cols-6 gap-7">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-7 justify-items-center">
         {isLoading ? (
           Array.from({ length: 8 }).map((_, index) => (
             <MovieCardSkeleton key={index} />
