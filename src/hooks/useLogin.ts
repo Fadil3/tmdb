@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useAuth } from '../context/AuthContext'
 
 export function useLogin() {
   const [loading, setLoading] = useState(false)
@@ -9,6 +8,8 @@ export function useLogin() {
     setLoading(true)
     setError(null)
     try {
+      const urlCallback = `${window.location.origin}/auth-callback`
+
       const response = await fetch(
         'https://api.themoviedb.org/4/auth/request_token',
         {
@@ -19,7 +20,8 @@ export function useLogin() {
             Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
           },
           body: JSON.stringify({
-            redirect_to: 'http://localhost:5173/auth-callback',
+            // redirect to current page /callback-
+            redirect_to: urlCallback,
           }),
         },
       )
