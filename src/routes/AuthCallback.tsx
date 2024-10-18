@@ -16,6 +16,7 @@ export function AuthCallback() {
         .then(({ access_token, account_id }) => {
           localStorage.setItem('access_token', access_token)
           localStorage.setItem('account_id', account_id)
+          localStorage.setItem('isLoggedIn', 'true')
           login()
           navigate('/')
         })

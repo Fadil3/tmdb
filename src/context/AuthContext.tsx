@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -14,6 +14,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  useEffect(() => {
+    const storedLoginStatus = localStorage.getItem('isLoggedIn');
+    if (storedLoginStatus === 'true') {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const login = () => setIsLoggedIn(true);
   const logout = () => setIsLoggedIn(false);
