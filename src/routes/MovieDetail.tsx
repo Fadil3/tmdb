@@ -1,21 +1,24 @@
 import { useParams } from 'react-router-dom'
 import { useState, useCallback } from 'react'
+
 import { useAuth } from '../context/AuthContext'
+import { useApi } from '../hooks/useApi'
+import { toggleFavorite, toggleBookmark, isFavorite, isBookmarked } from '../utils/MovieAction'
+
+import { Genre, IMovieDetail } from '../types/movie-detail'
+import { MovieResponse } from '../types/movie-lists'
+
+import Navbar from '../components/Navbar'
+import MovieDetailSkeleton from '../components/Loader/MovieDetailSkeleton'
+import CircleProgressBar from '../components/CircleProgressBar'
+import MovieGridLayout from '../components/Layouts/MovieGridLayout'
+import MovieCardSkeleton from '../components/Loader/MovieCardSkeleton'
+import LoginModal from '../components/LoginModal'
 
 import BookmarkIcon from '../assets/bookmark.svg'
 import BookmarkFilledIcon from '../assets/bookmark-filled.svg'
 import FavoriteIcon from '../assets/favorite.svg'
 import FavoriteFilledIcon from '../assets/favorite-filled.svg'
-import Navbar from '../components/Navbar'
-import { Genre, IMovieDetail } from '../types/movie-detail'
-import { useApi } from '../hooks/useApi'
-import CircleProgressBar from '../components/CircleProgressBar'
-import MovieDetailSkeleton from '../components/Loader/MovieDetailSkeleton'
-import { MovieResponse } from '../types/movie-lists'
-import MovieGridLayout from '../components/Layouts/MovieGridLayout'
-import MovieCardSkeleton from '../components/Loader/MovieCardSkeleton'
-import { toggleFavorite, toggleBookmark, isFavorite, isBookmarked } from '../utils/MovieAction'
-import LoginModal from '../components/LoginModal'
 
 export default function MovieDetail() {
   const { id } = useParams<{ id: string }>()

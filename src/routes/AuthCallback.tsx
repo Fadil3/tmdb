@@ -25,5 +25,7 @@ export function AuthCallback() {
     }
   }, [location, login, navigate])
 
-  return <div>Completing login process...</div>
+  return <div className='h-screen bg-black'>
+    <h1 className='pt-10 text-white font-bold text-4xl animate-pulse text-center'>Completing login process...</h1>
+  </div>
 }

@@ -1,30 +1,70 @@
+import { useState, useEffect } from 'react'
+import { useAuth } from '../context/AuthContext'
 import Navbar from '../components/Navbar'
-import MovieGridLayout from '../Layouts/MovieGridLayout'
+import MovieGridLayout from '../components/Layouts/MovieGridLayout'
+import LoginModal from '../components/LoginModal'
+import { getBookmarks, toggleFavorite, isFavorite, toggleBookmark, isBookmarked } from '../utils/MovieAction'
+import { Movie } from '../types/movie-lists'
 
 export default function Watchlists() {
-  const dummyMovies = Array(9).fill({
-    id: 1,
-    adult: false,
-    backdrop_path: 'https://placehold.co/600x400',
-    genre_ids: [1, 2, 3],
-    poster_path: 'https://placehold.co/600x400',
-    title: 'The Godfather',
-    release_date: '1972',
-    vote_average: 8.7,
-    vote_count: 1000,
-    overview:
-      'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.',
-    original_language: 'en',
-    original_title: 'The Godfather',
-    popularity: 85.5,
-    video: false,
-  })
+  const { isLoggedIn } = useAuth()
+  const [watchlist, setWatchlist] = useState<Movie[]>([])
+  const [_favoriteStatus, setFavoriteStatus] = useState<{ [key: number]: boolean }>({})
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setWatchlist(getBookmarks())
+    }
+  }, [isLoggedIn])
+
+  const handleLoginRequired = () => {
+    setIsLoginModalOpen(true)
+  }
+
+  const handleFavoriteClick = (movie: Movie) => {
+    if (isLoggedIn) {
+      toggleFavorite(movie)
+      setFavoriteStatus(prev => ({ ...prev, [movie.id]: !prev[movie.id] }))
+    } else {
+      handleLoginRequired()
+    }
+  }
+
+  const handleBookmarkClick = (movie: Movie) => {
+    if (isLoggedIn) {
+      toggleBookmark(movie)
+      setWatchlist(getBookmarks())
+    } else {
+      handleLoginRequired()
+    }
+  }
+
   return (
     <>
       <Navbar />
       <main className="w-full min-h-screen bg-black flex flex-col gap-8 p-20">
-        <MovieGridLayout movies={dummyMovies} gridTitle="Your Watchlist" />
+        {isLoggedIn ? (
+          <MovieGridLayout
+            movies={watchlist}
+            gridTitle="Your Watchlist"
+            onClickFavorite={handleFavoriteClick}
+            onClickBookmark={handleBookmarkClick}
+            isFavorite={(movie) => isFavorite(movie.id)}
+            isBookmarked={(movie) => isBookmarked(movie.id)}
+            isAuthenticated={isLoggedIn}
+            onLoginRequired={handleLoginRequired}
+          />
+        ) : (
+          <div className="text-white text-center">
+            Please log in to view your watchlist.
+          </div>
+        )}
       </main>
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </>
   )
 }
