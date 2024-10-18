@@ -1,41 +1,96 @@
-import MovieCard from '../components/MovieCard'
+import { useState, useCallback } from 'react'
+
+import { useAuth } from '../context/AuthContext'
+import LoginModal from '../components/LoginModal'
 import Navbar from '../components/Navbar'
-import MovieGridLayout from '../Layouts/MovieGridLayout'
+import MovieGridLayout from '../components/Layouts/MovieGridLayout'
+import MovieCarouselLayout from '../components/Layouts/MovieCarouselLayout'
+
+import { Movie } from '../types/movie-lists'
+import { useApi } from '../hooks/useApi'
+import { toggleFavorite, toggleBookmark, isFavorite, isBookmarked } from '../utils/MovieAction'
 
 export default function Root() {
-  const dummyMovies = Array(9).fill({
-    id: 1,
-    adult: false,
-    backdrop_path: 'https://placehold.co/600x400',
-    genre_ids: [1, 2, 3],
-    poster_path: 'https://placehold.co/600x400',
-    title: 'The Godfather',
-    release_date: '1972',
-    vote_average: 8.7,
-    vote_count: 1000,
-    overview:
-      'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.',
-    original_language: 'en',
-    original_title: 'The Godfather',
-    popularity: 85.5,
-    video: false,
-  })
+  const urlNowPlaying = 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1'
+  const urlTopRated = "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"
+  const options = {
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
+    },
+    delay: 500
+  }
+
+  const { data: nowPlayingData, loading: nowPlayingLoading, error: nowPlayingError } = useApi<{ results: Movie[] }>(urlNowPlaying, options)
+  const { data: topRatedData, loading: topRatedLoading, error: topRatedError } = useApi<{ results: Movie[] }>(urlTopRated, options)
+
+  const [, setFavoriteStatus] = useState<{ [key: number]: boolean }>({})
+  const [, setBookmarkStatus] = useState<{ [key: number]: boolean }>({})
+
+  const { isLoggedIn } = useAuth()
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+
+  const handleLoginRequired = useCallback(() => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true)
+    }
+  }, [isLoggedIn])
+
+  const handleFavoriteClick = useCallback((movie: Movie) => {
+    if (isLoggedIn) {
+      const newStatus = toggleFavorite(movie)
+      setFavoriteStatus(prev => ({ ...prev, [movie.id]: newStatus }))
+    } else {
+      handleLoginRequired()
+    }
+  }, [isLoggedIn])
+
+  const handleBookmarkClick = useCallback((movie: Movie) => {
+    if (isLoggedIn) {
+      const newStatus = toggleBookmark(movie)
+      setBookmarkStatus(prev => ({ ...prev, [movie.id]: newStatus }))
+    } else {
+      handleLoginRequired()
+    }
+  }, [isLoggedIn])
+
+
+
   return (
     <>
       <Navbar />
       <main className="w-full min-h-screen bg-black flex flex-col gap-8 p-20">
-        <section className="h-full">
-          <h2 className="font-semibold text-5xl text-white text-left mb-5">
-            Now Playing
-          </h2>
-          <div className="flex gap-7 overflow-x-scroll py-4 ">
-            {dummyMovies.map((movie, index) => (
-              <MovieCard key={`${movie.id}-${index}`} movie={movie} />
-            ))}
-          </div>
-        </section>
-        <MovieGridLayout movies={dummyMovies} gridTitle="Top Rated" />
+        <MovieCarouselLayout
+          movies={nowPlayingData?.results || []}
+          carouselTitle="Now Playing"
+          isLoading={nowPlayingLoading}
+          isError={nowPlayingError !== null}
+          errorMessage="Failed to load Now Playing movies. Please try again later."
+          onClickFavorite={handleFavoriteClick}
+          onClickBookmark={handleBookmarkClick}
+          isFavorite={(movie) => isFavorite(movie.id)}
+          isBookmarked={(movie) => isBookmarked(movie.id)}
+          isAuthenticated={isLoggedIn}
+          onLoginRequired={handleLoginRequired}
+        />
+        <MovieGridLayout
+          movies={topRatedData?.results || []}
+          gridTitle="Top Rated"
+          isLoading={topRatedLoading}
+          isError={topRatedError !== null}
+          errorMessage="Failed to load top-rated movies. Please try again later."
+          onClickFavorite={handleFavoriteClick}
+          onClickBookmark={handleBookmarkClick}
+          isFavorite={(movie) => isFavorite(movie.id)}
+          isBookmarked={(movie) => isBookmarked(movie.id)}
+          isAuthenticated={isLoggedIn}
+          onLoginRequired={handleLoginRequired}
+        />
       </main>
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </>
   )
 }

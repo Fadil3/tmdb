@@ -13,6 +13,8 @@ interface MovieCarouselLayoutProps {
   isLoading: boolean;
   isError: boolean;
   errorMessage: string;
+  isAuthenticated: boolean;
+  onLoginRequired: () => void;
 }
 
 const MovieCarouselLayout: React.FC<MovieCarouselLayoutProps> = ({
@@ -25,6 +27,8 @@ const MovieCarouselLayout: React.FC<MovieCarouselLayoutProps> = ({
   isLoading,
   isError,
   errorMessage,
+  isAuthenticated,
+  onLoginRequired,
 }) => {
   const renderErrorMessage = (message: string) => (
     <div className="text-red-500 text-xl">{message}</div>
@@ -44,7 +48,8 @@ const MovieCarouselLayout: React.FC<MovieCarouselLayoutProps> = ({
               <MovieCardSkeleton key={index} />
             ))
             : movies.map((movie, index) => (
-              <MovieCard key={`${movie.id}-${index}`} movie={movie} onClickBookmark={onClickBookmark} onClickFavorite={onClickFavorite} isBookmarked={isBookmarked} isFavorite={isFavorite} />
+              <MovieCard key={`${movie.id}-${index}`} movie={movie} onClickBookmark={onClickBookmark} onClickFavorite={onClickFavorite} isBookmarked={isBookmarked} isFavorite={isFavorite} isAuthenticated={isAuthenticated}
+                onLoginRequired={onLoginRequired} />
             ))}
         </div>
       )}

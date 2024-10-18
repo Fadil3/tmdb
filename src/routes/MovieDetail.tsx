@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { useState, useCallback } from 'react'
+import { useAuth } from '../context/AuthContext'
 
 import BookmarkIcon from '../assets/bookmark.svg'
 import BookmarkFilledIcon from '../assets/bookmark-filled.svg'
@@ -14,11 +15,14 @@ import { MovieResponse } from '../types/movie-lists'
 import MovieGridLayout from '../components/Layouts/MovieGridLayout'
 import MovieCardSkeleton from '../components/Loader/MovieCardSkeleton'
 import { toggleFavorite, toggleBookmark, isFavorite, isBookmarked } from '../utils/MovieAction'
+import LoginModal from '../components/LoginModal'
 
 export default function MovieDetail() {
   const { id } = useParams<{ id: string }>()
   const [favoriteStatus, setFavoriteStatus] = useState(isFavorite(Number(id)))
   const [bookmarkStatus, setBookmarkStatus] = useState(isBookmarked(Number(id)))
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+  const { isLoggedIn } = useAuth()
 
   const {
     data: movieData,
@@ -51,18 +55,32 @@ export default function MovieDetail() {
   )
 
   const handleFavoriteClick = useCallback(() => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true)
+      return
+    }
     if (movieData) {
       const newStatus = toggleFavorite(movieData)
       setFavoriteStatus(newStatus)
     }
-  }, [movieData])
+  }, [movieData, isLoggedIn])
 
   const handleBookmarkClick = useCallback(() => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true)
+      return
+    }
     if (movieData) {
       const newStatus = toggleBookmark(movieData)
       setBookmarkStatus(newStatus)
     }
-  }, [movieData])
+  }, [movieData, isLoggedIn])
+
+  const handleLoginRequired = () => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true)
+    }
+  }
 
   if (loading || nowPlayingLoading) {
     return (
@@ -165,10 +183,16 @@ export default function MovieDetail() {
               onClickBookmark={toggleBookmark}
               isFavorite={(movie) => isFavorite(movie.id)}
               isBookmarked={(movie) => isBookmarked(movie.id)}
+              isAuthenticated={isLoggedIn}
+              onLoginRequired={handleLoginRequired}
             />
           </section>
         </section>
       </main>
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </>
   )
 }

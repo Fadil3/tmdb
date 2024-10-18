@@ -15,6 +15,8 @@ interface MovieGridLayoutProps {
   isEmpty?: boolean
   isFetching?: boolean
   isSuccess?: boolean
+  isAuthenticated: boolean
+  onLoginRequired: () => void
 }
 
 export default function MovieGridLayout({
@@ -26,7 +28,9 @@ export default function MovieGridLayout({
   gridTitle,
   isLoading,
   isError,
-  errorMessage
+  errorMessage,
+  isAuthenticated,
+  onLoginRequired
 }: MovieGridLayoutProps) {
   return (
     <section className="h-full">
@@ -44,7 +48,16 @@ export default function MovieGridLayout({
           </div>
         ) : (
           movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} onClickBookmark={onClickBookmark} onClickFavorite={onClickFavorite} isBookmarked={isBookmarked} isFavorite={isFavorite} />
+            <MovieCard
+              key={movie.id}
+              movie={movie}
+              onClickBookmark={onClickBookmark}
+              onClickFavorite={onClickFavorite}
+              isBookmarked={isBookmarked}
+              isFavorite={isFavorite}
+              isAuthenticated={isAuthenticated}
+              onLoginRequired={onLoginRequired}
+            />
           ))
         )}
       </div>

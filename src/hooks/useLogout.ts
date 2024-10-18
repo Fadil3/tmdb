@@ -4,10 +4,11 @@ export function useLogout() {
   const { logout: setLoggedOut } = useAuth()
 
   const logout = () => {
-    localStorage.removeItemremoveItem('access_token')
-    localStorage.removeItem('request_token')
-    localStorage.removeItem('isLoggedIn')
+    // clear all local storage
+    localStorage.clear()
     setLoggedOut()
+    // refresh the page
+    window.location.reload()
   }
 
   return { logout }

@@ -1,18 +1,8 @@
 import LogoutIcon from '../assets/logout.svg'
-import { useLogin } from '../hooks/useLogin'
 import { useAuth } from '../context/AuthContext'
 
 export default function Navbar() {
   const { isLoggedIn, logout: authLogout } = useAuth()
-  const { login, loading } = useLogin()
-
-  const handleLogin = async () => {
-    try {
-      await login()
-    } catch (error) {
-      console.error('Login failed:', error)
-    }
-  }
 
   const handleLogout = () => {
     authLogout()
@@ -31,13 +21,9 @@ export default function Navbar() {
         <li>
           <a href="/watchlists">Watchlists</a>
         </li>
-        {isLoggedIn ? (
+        {isLoggedIn && (
           <button onClick={handleLogout}>
             <img src={LogoutIcon} alt="logout" />
-          </button>
-        ) : (
-          <button onClick={handleLogin} disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
           </button>
         )}
       </ul>

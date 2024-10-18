@@ -12,6 +12,8 @@ interface MovieCardProps {
   onClickBookmark: (movie: Movie) => void
   isFavorite: (movie: Movie) => boolean
   isBookmarked: (movie: Movie) => boolean
+  isAuthenticated: boolean
+  onLoginRequired: () => void
 }
 
 export default function MovieCard({
@@ -20,6 +22,8 @@ export default function MovieCard({
   onClickBookmark,
   isFavorite,
   isBookmarked,
+  isAuthenticated,
+  onLoginRequired
 }: MovieCardProps) {
   const navigate = useNavigate()
   const [isBookmarkHovered, setIsBookmarkHovered] = useState(false)
@@ -32,6 +36,22 @@ export default function MovieCard({
   const handleIconClick = (e: React.MouseEvent, callback: (movie: Movie) => void) => {
     e.stopPropagation()
     callback(movie)
+  }
+
+  const handleBookmarkClick = () => {
+    if (isAuthenticated) {
+      onClickBookmark(movie)
+    } else {
+      onLoginRequired()
+    }
+  }
+
+  const handleFavoriteClick = () => {
+    if (isAuthenticated) {
+      onClickFavorite(movie)
+    } else {
+      onLoginRequired()
+    }
   }
 
   return (
@@ -51,7 +71,7 @@ export default function MovieCard({
           <div className="flex gap-2">
             <div
               className="w-6 h-6 cursor-pointer"
-              onClick={(e) => handleIconClick(e, onClickBookmark)}
+              onClick={(e) => handleIconClick(e, handleBookmarkClick)}
               onMouseEnter={() => setIsBookmarkHovered(true)}
               onMouseLeave={() => setIsBookmarkHovered(false)}
             >
@@ -66,7 +86,7 @@ export default function MovieCard({
             </div>
             <div
               className="w-6 h-6 cursor-pointer"
-              onClick={(e) => handleIconClick(e, onClickFavorite)}
+              onClick={(e) => handleIconClick(e, handleFavoriteClick)}
               onMouseEnter={() => setIsFavoriteHovered(true)}
               onMouseLeave={() => setIsFavoriteHovered(false)}
             >
