@@ -28,6 +28,7 @@ export default function MovieCard({
   const navigate = useNavigate()
   const [isBookmarkHovered, setIsBookmarkHovered] = useState(false)
   const [isFavoriteHovered, setIsFavoriteHovered] = useState(false)
+  const [imageError, setImageError] = useState(false);
 
   const handleCardClick = () => {
     navigate(`/movie/${movie.id}`)
@@ -61,10 +62,11 @@ export default function MovieCard({
     >
       <div className="overflow-hidden rounded-t-lg relative group">
         <img
-          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+          src={imageError ? 'https://fakeimg.pl/193x290?text=image' : `https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           loading='lazy'
-          alt="photo"
+          alt={movie.title}
           className="h-[289px] w-full object-cover z-0"
+          onError={() => setImageError(true)}
         />
         <div className="bg-gradient-to-b from-slate-500 to-zinc-800 h-full w-full invisible group-hover:visible absolute z-[1] opacity-50 top-0" />
         <div className="absolute bottom-2 left-0 w-full h-12 flex justify-end items-center px-4 invisible group-hover:visible z-[2]">
