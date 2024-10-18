@@ -5,7 +5,6 @@ import LogoutIcon from '../assets/logout.svg'
 import { useAuth } from '../context/AuthContext'
 import LoginModal from './LoginModal'
 
-
 export default function Navbar() {
   const { isLoggedIn, logout: authLogout } = useAuth()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
@@ -32,10 +31,14 @@ export default function Navbar() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/favorites" onClick={handleProtectedRouteAccess}>Favorites</Link>
+            <Link to="/favorites" onClick={handleProtectedRouteAccess}>
+              Favorites
+            </Link>
           </li>
           <li>
-            <Link to="/watchlists" onClick={handleProtectedRouteAccess}>Watchlists</Link>
+            <Link to="/watchlists" onClick={handleProtectedRouteAccess}>
+              Watchlists
+            </Link>
           </li>
           {isLoggedIn && (
             <button onClick={handleLogout}>

@@ -3,7 +3,12 @@ import { useState, useCallback } from 'react'
 
 import { useAuth } from '../context/AuthContext'
 import { useApi } from '../hooks/useApi'
-import { toggleFavorite, toggleBookmark, isFavorite, isBookmarked } from '../utils/MovieAction'
+import {
+  toggleFavorite,
+  toggleBookmark,
+  isFavorite,
+  isBookmarked,
+} from '../utils/MovieAction'
 
 import { Genre, IMovieDetail } from '../types/movie-detail'
 import { MovieResponse } from '../types/movie-lists'
@@ -38,7 +43,7 @@ export default function MovieDetail() {
         accept: 'application/json',
         Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
       },
-      delay: 500
+      delay: 500,
     },
   )
 
@@ -53,7 +58,7 @@ export default function MovieDetail() {
         accept: 'application/json',
         Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
       },
-      delay: 500
+      delay: 500,
     },
   )
 
@@ -94,11 +99,12 @@ export default function MovieDetail() {
           <h2 className="font-semibold text-5xl text-white mb-8">
             Now Playing
           </h2>
-          <div className="grid grid-cols-5 xl:grid-cols-6 gap-7"> {
-            Array.from({ length: 8 }).map((_, index) => (
+          <div className="grid grid-cols-5 xl:grid-cols-6 gap-7">
+            {' '}
+            {Array.from({ length: 8 }).map((_, index) => (
               <MovieCardSkeleton key={index} />
-            ))
-          }</div>
+            ))}
+          </div>
         </div>
       </>
     )
@@ -133,12 +139,14 @@ export default function MovieDetail() {
             <div className="">
               <h1 className="font-bold text-4xl mb-2">
                 {movieData?.original_title}{' '}
-                <span className="font-normal">({new Date(movieData?.release_date || '').getFullYear()})</span>
+                <span className="font-normal">
+                  ({new Date(movieData?.release_date || '').getFullYear()})
+                </span>
               </h1>
               <p className="mb-5">
-                {movieData?.release_date} • {" "}
+                {movieData?.release_date} •{' '}
                 {movieData?.genres.map((genre: Genre) => genre.name).join(', ')}{' '}
-                •{" "}{movieData?.runtime} min
+                • {movieData?.runtime} min
               </p>
               <div className="flex gap-3 mb-6 items-center">
                 <CircleProgressBar
@@ -181,7 +189,7 @@ export default function MovieDetail() {
               gridTitle="Now Playing"
               isLoading={nowPlayingLoading}
               isError={nowPlayingError !== null}
-              errorMessage='An error occurred while fetching movies.'
+              errorMessage="An error occurred while fetching movies."
               onClickFavorite={toggleFavorite}
               onClickBookmark={toggleBookmark}
               isFavorite={(movie) => isFavorite(movie.id)}

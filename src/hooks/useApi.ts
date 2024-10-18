@@ -28,7 +28,7 @@ export function useApi<T>(
 
         if (options.delay) {
           console.log('Delaying for', options.delay, 'milliseconds')
-          await new Promise(resolve => setTimeout(resolve, options.delay))
+          await new Promise((resolve) => setTimeout(resolve, options.delay))
         }
 
         const response = await fetch(url, {

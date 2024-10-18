@@ -30,7 +30,7 @@ export default function MovieGridLayout({
   isError,
   errorMessage,
   isAuthenticated,
-  onLoginRequired
+  onLoginRequired,
 }: MovieGridLayoutProps) {
   return (
     <section className="h-full">

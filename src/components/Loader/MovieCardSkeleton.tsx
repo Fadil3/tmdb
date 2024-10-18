@@ -7,7 +7,7 @@ const MovieCardSkeleton = () => {
         <div className="h-4 bg-gray-700 rounded w-1/2"></div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MovieCardSkeleton;
+export default MovieCardSkeleton

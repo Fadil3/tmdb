@@ -1,14 +1,14 @@
-import React from 'react';
-import { useAuth } from '../../context/AuthContext';
-import LoginModal from '../LoginModal';
-import Navbar from '../Navbar';
+import React from 'react'
+import { useAuth } from '../../context/AuthContext'
+import LoginModal from '../LoginModal'
+import Navbar from '../Navbar'
 
 interface PageWrapperProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
-const PageWrapper: React.FC<PageWrapperProps> = ({ children }) => {
-  const { isLoginModalOpen, closeLoginModal } = useAuth();
+export default function ({ children }: PageWrapperProps) {
+  const { isLoginModalOpen, closeLoginModal } = useAuth()
 
   return (
     <>
@@ -18,7 +18,5 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children }) => {
       </main>
       <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
     </>
-  );
-};
-
-export default PageWrapper;
+  )
+}

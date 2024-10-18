@@ -23,18 +23,21 @@ export default function MovieCard({
   isFavorite,
   isBookmarked,
   isAuthenticated,
-  onLoginRequired
+  onLoginRequired,
 }: MovieCardProps) {
   const navigate = useNavigate()
   const [isBookmarkHovered, setIsBookmarkHovered] = useState(false)
   const [isFavoriteHovered, setIsFavoriteHovered] = useState(false)
-  const [imageError, setImageError] = useState(false);
+  const [imageError, setImageError] = useState(false)
 
   const handleCardClick = () => {
     navigate(`/movie/${movie.id}`)
   }
 
-  const handleIconClick = (e: React.MouseEvent, callback: (movie: Movie) => void) => {
+  const handleIconClick = (
+    e: React.MouseEvent,
+    callback: (movie: Movie) => void,
+  ) => {
     e.stopPropagation()
     callback(movie)
   }
@@ -62,8 +65,12 @@ export default function MovieCard({
     >
       <div className="overflow-hidden rounded-t-lg relative group">
         <img
-          src={imageError ? 'https://fakeimg.pl/193x290?text=image' : `https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-          loading='lazy'
+          src={
+            imageError
+              ? 'https://fakeimg.pl/193x290?text=image'
+              : `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+          }
+          loading="lazy"
           alt={movie.title}
           className="h-[289px] w-full object-cover z-0"
           onError={() => setImageError(true)}
@@ -106,7 +113,9 @@ export default function MovieCard({
       </div>
       <div className="px-4 text-left py-2">
         <h4 className="text-[#B6B6B6] font-bold line-clamp-1">{movie.title}</h4>
-        <h5 className="text-[#828282]">{new Date(movie.release_date).getFullYear()}</h5>
+        <h5 className="text-[#828282]">
+          {new Date(movie.release_date).getFullYear()}
+        </h5>
       </div>
     </div>
   )

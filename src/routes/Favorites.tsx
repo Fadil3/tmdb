@@ -2,13 +2,21 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import PageWrapper from '../components/Layouts/PageWrapper'
 import MovieGridLayout from '../components/Layouts/MovieGridLayout'
-import { getFavorites, toggleFavorite, isFavorite, toggleBookmark, isBookmarked } from '../utils/MovieAction'
+import {
+  getFavorites,
+  toggleFavorite,
+  isFavorite,
+  toggleBookmark,
+  isBookmarked,
+} from '../utils/MovieAction'
 import { Movie } from '../types/movie-lists'
 
 export default function Favorites() {
   const { isLoggedIn, openLoginModal } = useAuth()
   const [favorites, setFavorites] = useState<Movie[]>([])
-  const [_bookmarkStatus, setBookmarkStatus] = useState<{ [key: number]: boolean }>({})
+  const [_bookmarkStatus, setBookmarkStatus] = useState<{
+    [key: number]: boolean
+  }>({})
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -34,7 +42,7 @@ export default function Favorites() {
   const handleBookmarkClick = (movie: Movie) => {
     if (isLoggedIn) {
       toggleBookmark(movie)
-      setBookmarkStatus(prev => ({ ...prev, [movie.id]: !prev[movie.id] }))
+      setBookmarkStatus((prev) => ({ ...prev, [movie.id]: !prev[movie.id] }))
     } else {
       handleLoginRequired()
     }

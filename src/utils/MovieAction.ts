@@ -14,7 +14,7 @@ function setStoredMovies(key: string, movies: Movie[]): void {
 
 export function toggleMovieInList(movie: Movie, listKey: string): boolean {
   const storedMovies = getStoredMovies(listKey)
-  const index = storedMovies.findIndex(m => m.id === movie.id)
+  const index = storedMovies.findIndex((m) => m.id === movie.id)
 
   if (index === -1) {
     storedMovies.push(movie)
@@ -28,7 +28,7 @@ export function toggleMovieInList(movie: Movie, listKey: string): boolean {
 
 export function isMovieInList(movieId: number, listKey: string): boolean {
   const storedMovies = getStoredMovies(listKey)
-  return storedMovies.some(m => m.id === movieId)
+  return storedMovies.some((m) => m.id === movieId)
 }
 
 export function toggleFavorite(movie: Movie): boolean {

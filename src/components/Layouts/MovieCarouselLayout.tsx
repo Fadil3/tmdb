@@ -1,23 +1,23 @@
-import React from 'react';
-import MovieCardSkeleton from '../Loader/MovieCardSkeleton';
-import MovieCard from '../MovieCard';
-import { Movie } from '../../types/movie-lists';
+import React from 'react'
+import MovieCardSkeleton from '../Loader/MovieCardSkeleton'
+import MovieCard from '../MovieCard'
+import { Movie } from '../../types/movie-lists'
 
 interface MovieCarouselLayoutProps {
-  movies: Movie[];
-  onClickFavorite: (movie: Movie) => void;
-  onClickBookmark: (movie: Movie) => void;
-  isFavorite: (movie: Movie) => boolean;
-  isBookmarked: (movie: Movie) => boolean;
-  carouselTitle: string;
-  isLoading: boolean;
-  isError: boolean;
-  errorMessage: string;
-  isAuthenticated: boolean;
-  onLoginRequired: () => void;
+  movies: Movie[]
+  onClickFavorite: (movie: Movie) => void
+  onClickBookmark: (movie: Movie) => void
+  isFavorite: (movie: Movie) => boolean
+  isBookmarked: (movie: Movie) => boolean
+  carouselTitle: string
+  isLoading: boolean
+  isError: boolean
+  errorMessage: string
+  isAuthenticated: boolean
+  onLoginRequired: () => void
 }
 
-const MovieCarouselLayout: React.FC<MovieCarouselLayoutProps> = ({
+export default function MovieCarouselLayout({
   movies,
   onClickFavorite,
   onClickBookmark,
@@ -29,10 +29,10 @@ const MovieCarouselLayout: React.FC<MovieCarouselLayoutProps> = ({
   errorMessage,
   isAuthenticated,
   onLoginRequired,
-}) => {
+}: MovieCarouselLayoutProps) {
   const renderErrorMessage = (message: string) => (
     <div className="text-red-500 text-xl">{message}</div>
-  );
+  )
 
   return (
     <section className="h-full">
@@ -44,17 +44,23 @@ const MovieCarouselLayout: React.FC<MovieCarouselLayoutProps> = ({
       ) : (
         <div className="flex gap-7 overflow-x-scroll py-4">
           {isLoading
-            ? Array(10).fill(0).map((_, index) => (
-              <MovieCardSkeleton key={index} />
-            ))
+            ? Array(10)
+                .fill(0)
+                .map((_, index) => <MovieCardSkeleton key={index} />)
             : movies.map((movie, index) => (
-              <MovieCard key={`${movie.id}-${index}`} movie={movie} onClickBookmark={onClickBookmark} onClickFavorite={onClickFavorite} isBookmarked={isBookmarked} isFavorite={isFavorite} isAuthenticated={isAuthenticated}
-                onLoginRequired={onLoginRequired} />
-            ))}
+                <MovieCard
+                  key={`${movie.id}-${index}`}
+                  movie={movie}
+                  onClickBookmark={onClickBookmark}
+                  onClickFavorite={onClickFavorite}
+                  isBookmarked={isBookmarked}
+                  isFavorite={isFavorite}
+                  isAuthenticated={isAuthenticated}
+                  onLoginRequired={onLoginRequired}
+                />
+              ))}
         </div>
       )}
     </section>
-  );
-};
-
-export default MovieCarouselLayout;
+  )
+}
