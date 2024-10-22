@@ -2,8 +2,8 @@ import { useState, useCallback } from 'react'
 
 import { useAuth } from '../context/AuthContext'
 
-import MovieGridLayout from '../components/Layouts/MovieGridLayout'
-import MovieCarouselLayout from '../components/Layouts/MovieCarouselLayout'
+import MovieGridLayout from '../components/layouts/MovieGridLayout'
+import MovieCarouselLayout from '../components/layouts/MovieCarouselLayout'
 
 import { Movie } from '../types/movie-lists'
 import { useApi } from '../hooks/useApi'
@@ -13,7 +13,7 @@ import {
   isFavorite,
   isBookmarked,
 } from '../utils/MovieAction'
-import PageWrapper from '../components/Layouts/PageWrapper'
+import PageWrapper from '../components/layouts/PageWrapper'
 
 export default function Root() {
   const urlNowPlaying =

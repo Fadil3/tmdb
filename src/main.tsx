@@ -25,10 +25,6 @@ const router = createBrowserRouter([
     element: <Favorites />,
   },
   {
-    path: '/movies',
-    element: <div>list movies</div>,
-  },
-  {
     path: '/movie/:id',
     element: <MovieDetail />,
   },

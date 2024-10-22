@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
-import PageWrapper from '../components/Layouts/PageWrapper'
-import MovieGridLayout from '../components/Layouts/MovieGridLayout'
+import PageWrapper from '../components/layouts/PageWrapper'
+import MovieGridLayout from '../components/layouts/MovieGridLayout'
 import {
   getBookmarks,
   toggleFavorite,

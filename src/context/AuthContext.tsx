@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react'
 
 interface AuthContextType {
   isLoggedIn: boolean
-  login: () => void
+  login: (access_token: string, account_id: string) => void
   logout: () => void
   isLoginModalOpen: boolean
   openLoginModal: () => void
@@ -22,7 +22,12 @@ export default function ({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  const login = () => setIsLoggedIn(true)
+  const login = (access_token: string, account_id: string) => {
+    localStorage.setItem('access_token', access_token)
+    localStorage.setItem('account_id', account_id)
+    localStorage.setItem('isLoggedIn', 'true')
+    setIsLoggedIn(true)
+  }
   const logout = () => {
     localStorage.clear()
     setIsLoggedIn(false)

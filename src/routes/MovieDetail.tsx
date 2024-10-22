@@ -13,12 +13,10 @@ import {
 import { Genre, IMovieDetail } from '../types/movie-detail'
 import { MovieResponse } from '../types/movie-lists'
 
-import Navbar from '../components/Navbar'
 import MovieDetailSkeleton from '../components/Loader/MovieDetailSkeleton'
 import CircleProgressBar from '../components/CircleProgressBar'
-import MovieGridLayout from '../components/Layouts/MovieGridLayout'
-import MovieCardSkeleton from '../components/Loader/MovieCardSkeleton'
-import PageWrapper from '../components/Layouts/PageWrapper'
+import MovieGridLayout from '../components/layouts/MovieGridLayout'
+import PageWrapper from '../components/layouts/PageWrapper'
 
 import BookmarkIcon from '../assets/bookmark.svg'
 import BookmarkFilledIcon from '../assets/bookmark-filled.svg'
@@ -91,21 +89,19 @@ export default function MovieDetail() {
 
   if (loading || nowPlayingLoading) {
     return (
-      <>
-        <Navbar />
+      <PageWrapper>
         <MovieDetailSkeleton />
-        <div className="px-10 py-[50px] bg-black">
-          <h2 className="font-semibold text-5xl text-white mb-8">
-            Now Playing
-          </h2>
-          <div className="grid grid-cols-5 xl:grid-cols-6 gap-7">
-            {' '}
-            {Array.from({ length: 8 }).map((_, index) => (
-              <MovieCardSkeleton key={index} />
-            ))}
-          </div>
-        </div>
-      </>
+        <MovieGridLayout
+          movies={[]}
+          gridTitle="Now Playing"
+          isLoading={true}
+          onClickFavorite={() => { }}
+          onClickBookmark={() => { }}
+          isFavorite={() => false}
+          isBookmarked={() => false}
+          isAuthenticated={isLoggedIn}
+          onLoginRequired={handleLoginRequired} />
+      </PageWrapper>
     )
   }
 
